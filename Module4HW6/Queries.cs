@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Module4HW6.Data;
 
 namespace Module4HW6
 {
@@ -15,21 +14,12 @@ namespace Module4HW6
             _context = context;
         }
 
-        public async Task Run()
-        {
-            await FirstQuery();
-            await SecondQuery();
-            await ThirdQuery();
-        }
-
         public async Task FirstQuery()
         {
             var firstQuery = await _context.Artists
                     .Include(i => i.Songs)
                     .ThenInclude(i => i.Genre)
                     .ToListAsync();
-
-            Console.WriteLine("First query");
 
             foreach (var artist in firstQuery)
             {
@@ -48,8 +38,6 @@ namespace Module4HW6
                 .Select(s => new { title = s.Title, count = _context.Songs.Count(c => c.Genre.Title.Equals(s.Title)) })
                 .ToListAsync();
 
-            Console.WriteLine("Second query");
-
             foreach (var genre in secondQuery)
             {
                 Console.WriteLine($"Genre: {genre.title} Count of songs: {genre.count}");
@@ -61,8 +49,6 @@ namespace Module4HW6
             var thirdQuery = await _context.Songs
                     .Where(w => w.ReleasedDate < _context.Artists.Max(m => m.DateOfBirth))
                     .ToListAsync();
-
-            Console.WriteLine("Third query");
 
             foreach (var song in thirdQuery)
             {

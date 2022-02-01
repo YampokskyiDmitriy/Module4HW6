@@ -14,7 +14,9 @@ namespace Module4HW6
                 await init.InitializeGenreTable();
                 await init.InitializeSongTable();
 
-                await new Queries(context).Run();
+                await new Queries(context).FirstQuery();
+                await new Queries(context).SecondQuery();
+                await new Queries(context).ThirdQuery();
             }
         }
     }
